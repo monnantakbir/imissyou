@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>One More Thing</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(to bottom right, #ffd6e8, #ffeef5, #fff0f8);
+      font-family: 'Poppins', sans-serif;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* 🌸 FLOAT ANIMATION */
+    @keyframes float {
+      0% { transform: translateY(-50%) translateY(0px); }
+      50% { transform: translateY(-50%) translateY(-12px); }
+      100% { transform: translateY(-50%) translateY(0px); }
+    }
+
+    /* 🌸 SIDE LILIES */
+    .side-flower {
+      position: fixed;
+      top: 50%;
+      width: 200px;
+      opacity: 0.85;
+      z-index: 0;
+      pointer-events: none;
+      filter: drop-shadow(0 15px 25px rgba(0,0,0,0.2));
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .left {
+      left: 20px;
+    }
+
+    .right {
+      right: 20px;
+    }
+
+    /* ✨ CARD WITH SOFT GLOW */
+    #card {
+      background: white;
+      padding: 50px;
+      border-radius: 25px;
+      max-width: 700px;
+      width: 90%;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+
+      box-shadow:
+        0 20px 60px rgba(0,0,0,0.15),
+        0 0 50px rgba(214, 51, 132, 0.2);
+    }
+
+    h1 {
+      font-family: 'Dancing Script', cursive;
+      color: #d63384;
+      font-size: 42px;
+      margin-bottom: 20px;
+    }
+
+    #typewriter {
+      font-size: 18px;
+      line-height: 1.8;
+      min-height: 120px;
+      margin-bottom: 30px;
+    }
+
+    .slideshow {
+      position: relative;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .slide {
+      display: none;
+      width: 100%;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    }
+
+    .active {
+      display: block;
+    }
+
+    #finalMessage {
+      opacity: 0;
+      margin-top: 30px;
+      font-weight: 500;
+      font-size: 20px;
+      transition: opacity 2s ease;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 🌸 FLOATING LILIES -->
+  <img src="lily.png" class="side-flower left">
+  <img src="lily.png" class="side-flower right">
+
+  <div id="card">
+    <h1>Before You Go</h1>
+
+    <div id="typewriter"></div>
+
+    <div class="slideshow">
+      <img src="photo1.jpg" class="slide active">
+      <img src="photo2.jpg" class="slide">
+      <img src="photo3.jpg" class="slide">
+    </div>
+
+    <p id="finalMessage">
+      And if I had to choose again, it would still be you.
+    </p>
+  </div>
+
+  <audio id="bgMusic" src="song2.mp3" loop></audio>
+
+  <script>
+    const music = document.getElementById("bgMusic");
+    music.volume = 0;
+
+    window.addEventListener("load", () => {
+      music.play().then(() => {
+        fadeInMusic();
+      }).catch(() => {
+        console.log("Autoplay blocked by browser");
+      });
+    });
+
+    function fadeInMusic() {
+      let volume = 0;
+      const fade = setInterval(() => {
+        if (volume < 0.5) {
+          volume += 0.01;
+          music.volume = volume;
+        } else {
+          clearInterval(fade);
+        }
+      }, 100);
+    }
+
+    const text = "I don't know what the future holds. But I know that every memory with you is something I would choose again. And again. And again. I love you and I will always love you. You've taught me what it means to be in love and you've shown me how to live. I have a lot of life to live and a lot of love to give. I'm glad I met you. You're my role model, my hero. Everything I want to be you are. I can't look at you without feeling and knowing I've found my other half. In this life or the next, I'm happy that I got to spend some of it with you. I'm proud of the person you are and the person you are becoming. I have nothing but the best wishes for you. You've not only gotten me through some of the toughest moments of my life, but you've helped me find a purpose. I want to repay the favor to you, no matter how long it takes. Your dreams, ambitions, hobbies, I want to be there, help you, listen to you, push you. Even then, it still wouldn't be enough to repay that favor since you are the blooming flower in the spring for my life. You're timeless, priceless, and before its my time to go, I want you to know my love will reach you no matter where we are.";
+
+    const typewriter = document.getElementById("typewriter");
+    let index = 0;
+
+    function typeEffect() {
+      if (index < text.length) {
+        typewriter.innerHTML += text.charAt(index);
+        index++;
+        setTimeout(typeEffect, 40);
+      }
+    }
+
+    typeEffect();
+
+    let slideIndex = 0;
+    const slides = document.querySelectorAll(".slide");
+
+    function showSlides() {
+      slides.forEach(slide => slide.classList.remove("active"));
+      slideIndex++;
+
+      if (slideIndex >= slides.length) {
+        slideIndex = slides.length - 1;
+        slides[slideIndex].classList.add("active");
+        document.getElementById("finalMessage").style.opacity = "1";
+        return;
+      }
+
+      slides[slideIndex].classList.add("active");
+      setTimeout(showSlides, 10000);
+    }
+
+    setTimeout(showSlides, 10000);
+  </script>
+
+</body>
+</html>
